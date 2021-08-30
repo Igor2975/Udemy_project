@@ -199,6 +199,57 @@ window.addEventListener('DOMContentLoaded', () => {
         '.menu .container',
         'menu__item'
      ).render();
+     
+     //Forms
+
+     const forms = document.querySelectorAll('form');
+
+     const message = {
+         loading:'Загрузка',
+         success:'Спасибо.Мы с вами свяжемся.',
+         failure:'Что-то пошло не так ...'
+     };
+
+     forms.forEach(item =>{
+         postData(item);
+     })
+
+     function postData(form){
+         form.addEventListener('submit', (e) =>{
+
+             //отмена перезагрузки браузера
+             e.preventDefault();
+
+             const statusMessage = document.createElement('div');// создаем элемент
+             statusMessage.classList.add('status');// добавляем класс
+             statusMessage.textContent = message.loading;
+             form.append(statusMessage); //  добавляем в index.html
+
+             const request = new XMLHttpRequest();
+             request.open('POST', 'server.php');
+             
+             //при связке XMLHttpRequest и formData заголовок не нужен
+            // request.setRequestHeader('Content-type','multipart/form-data')
+             const formData = new FormData(form);
+             // в index.html  в данных всегда должен быть указан атрибут "name"
+
+             request.send(formData);
+
+             request.addEventListener('load', () =>{
+                 if (request.status === 200){
+                     statusMessage.textContent = message.success;
+                     form.reset(); //очистка формы
+                     setTimeout(()=>{
+                         statusMessage.remove();
+                     },3000)
+                 }else{
+                     statusMessage.textContent = message.failure;
+                 }
+             })
+         })
+     }
+
+
 
      
 
