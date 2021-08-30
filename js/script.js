@@ -229,11 +229,19 @@ window.addEventListener('DOMContentLoaded', () => {
              request.open('POST', 'server.php');
              
              //при связке XMLHttpRequest и formData заголовок не нужен
-            // request.setRequestHeader('Content-type','multipart/form-data')
+             request.setRequestHeader('Content-type','application/json')
              const formData = new FormData(form);
              // в index.html  в данных всегда должен быть указан атрибут "name"
 
-             request.send(formData);
+             const object = {};
+             formData.forEach(function(key,value){
+                 object[key] = value;
+             });
+
+             //переводим обьект в json
+             const json = JSON.stringify(object);
+
+             request.send(json);
 
              request.addEventListener('load', () =>{
                  if (request.status === 200){
