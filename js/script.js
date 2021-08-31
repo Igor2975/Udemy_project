@@ -108,11 +108,11 @@ window.addEventListener('DOMContentLoaded', () => {
     
     
 // закрытие окна при нажатии на окно или на крестик
-     modal.addEventListener('click', (event)=>{
-        if(event.target === modal || event.target.getAtttibute('data-close') == '') {
-            closeModal();
-        };
-    })
+modal.addEventListener('click', (e) => {
+    if (e.target === modal || e.target.getAttribute('data-close') == "") {
+        closeModal();
+    }
+});
     document.addEventListener('keydown',(event)=>{
         if(event.code === "Escape"&& modal.classList.contains('show')){
             closeModal();
@@ -245,16 +245,43 @@ window.addEventListener('DOMContentLoaded', () => {
 
              request.addEventListener('load', () =>{
                  if (request.status === 200){
-                     statusMessage.textContent = message.success;
+                     console.log(request.response);
+                     showThanksModal(message.success) ;
+                     statusMessage.remove();
                      form.reset(); //очистка формы
-                     setTimeout(()=>{
-                         statusMessage.remove();
-                     },3000)
+                     
                  }else{
-                     statusMessage.textContent = message.failure;
+                    showThanksModal(message.failure) ; 
                  }
-             })
-         })
+             });
+         });
+     }
+
+     function showThanksModal(message){
+         const prevModalDialog = document.querySelector('.modal__dialog');
+
+         //убираем модальное окно
+         prevModalDialog.classList.add('hide');
+         openModal();
+
+         const thanksModal = document.createElement('div');
+         thanksModal.classList.add('modal__dialog');
+         thanksModal.innerHTML = `
+             <div class="modal__content">
+                 <div class="modal__close" data-close="" class="modal__close">×</div>
+                 <div class="modal__title">${message}</div>
+             </div>
+         `;
+
+         document.querySelector('.modal').append(thanksModal);
+         setTimeout(() =>{
+             thanksModal.remove();
+             prevModalDialog.classList.add('show');
+             prevModalDialog.classList.remove('hide');
+             closeModal();
+
+         },4000);
+
      }
 
 
