@@ -205,7 +205,7 @@ modal.addEventListener('click', (e) => {
      const forms = document.querySelectorAll('form');
 
      const message = {
-         loading:'Загрузка',
+         loading:'img/form/spinner.svg',
          success:'Спасибо.Мы с вами свяжемся.',
          failure:'Что-то пошло не так ...'
      };
@@ -220,10 +220,14 @@ modal.addEventListener('click', (e) => {
              //отмена перезагрузки браузера
              e.preventDefault();
 
-             const statusMessage = document.createElement('div');// создаем элемент
-             statusMessage.classList.add('status');// добавляем класс
-             statusMessage.textContent = message.loading;
-             form.append(statusMessage); //  добавляем в index.html
+             const statusMessage = document.createElement('img');// создаем элемент
+             statusMessage.src = message.loading;// добавляем класс
+             statusMessage.style.cssText =`
+                 display:block;
+                 margin:0 auto;
+             `;
+             //form.append(statusMessage); //  добавляем в index.html
+             form.insertAdjacentElement('afterend',statusMessage);
 
              const request = new XMLHttpRequest();
              request.open('POST', 'server.php');
