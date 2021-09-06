@@ -235,21 +235,20 @@ modal.addEventListener('click', (e) => {
              const formData = new FormData(form);
              // в index.html  в данных всегда должен быть указан атрибут "name"
 
-            /* const object = {};
-             formData.forEach(function(key,value){
+             const object = {};
+             formData.forEach(function(value,key){
                  object[key] = value;
-             });
-
-             //переводим обьект в json
-             const json = JSON.stringify(object);*/
+             })         
 
              fetch('server.php',{
                 method:"POST",
-                //headers:{
-                //   'Content-type':'application/json'
-                //},
-                body:formData
+                headers:{
+                   'Content-type':'application/json'
+                },
+                //переводим обьект в json
+                body:JSON.stringify(object)
             }).then(data => data.text())
+
             .then(data =>{
                 console.log(data);
                 showThanksModal(message.success) ;
