@@ -229,35 +229,38 @@ modal.addEventListener('click', (e) => {
              //form.append(statusMessage); //  добавляем в index.html
              form.insertAdjacentElement('afterend',statusMessage);
 
-             const request = new XMLHttpRequest();
-             request.open('POST', 'server.php');
-             
+            
              //при связке XMLHttpRequest и formData заголовок не нужен
-             request.setRequestHeader('Content-type','application/json')
+             
              const formData = new FormData(form);
              // в index.html  в данных всегда должен быть указан атрибут "name"
 
-             const object = {};
+            /* const object = {};
              formData.forEach(function(key,value){
                  object[key] = value;
              });
 
              //переводим обьект в json
-             const json = JSON.stringify(object);
+             const json = JSON.stringify(object);*/
 
-             request.send(json);
-
-             request.addEventListener('load', () =>{
-                 if (request.status === 200){
-                     console.log(request.response);
-                     showThanksModal(message.success) ;
-                     statusMessage.remove();
-                     form.reset(); //очистка формы
-                     
-                 }else{
-                    showThanksModal(message.failure) ; 
-                 }
-             });
+             fetch('server.php',{
+                method:"POST",
+                //headers:{
+                //   'Content-type':'application/json'
+                //},
+                body:formData
+            }).then(data => data.text())
+            .then(data =>{
+                console.log(data);
+                showThanksModal(message.success) ;
+                statusMessage.remove();
+                form.reset(); //очистка формы
+            }).catch(() =>{
+                showThanksModal(message.failure) ; 
+            }).finally(() =>{
+                form.reset(); //очистка формы    
+            });
+          
          });
      }
 
@@ -287,6 +290,10 @@ modal.addEventListener('click', (e) => {
          },4000);
 
      }
+
+     //Fetch API
+
+     
 
 
 
