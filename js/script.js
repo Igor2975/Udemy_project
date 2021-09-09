@@ -290,7 +290,15 @@ modal.addEventListener('click', (e) => {
 
      }
 
-     //Fetch API
+     /*fetch('db.json')//получаем обьект
+         .then(data =>data.json())
+         .then(res =>console.log(res));*/
+
+    // открываем через json-server     
+
+      fetch('http://localhost:3000/menu')//получаем массив
+         .then(data =>data.json())
+         .then(res =>console.log(res)); 
 
      
 
