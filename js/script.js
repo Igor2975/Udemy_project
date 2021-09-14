@@ -178,14 +178,17 @@ modal.addEventListener('click', (e) => {
 
         return await res.json();
     };
-
+      
+    // 1 способ
     /*getResourse('http://localhost:3000/menu')
        .then(data =>{
            data.forEach(({img,altimg,title,descr,price}) =>{//деструктурируем obj
                new MenuCard(img,altimg,title,descr,price, '.menu .container').render();
            });
        });*/
-       getResourse('http://localhost:3000/menu') 
+
+       //2 способ
+       /*getResourse('http://localhost:3000/menu') 
        .then(data => createCard(data));//получаем массив  из db.json
 
        function createCard(data){
@@ -206,7 +209,14 @@ modal.addEventListener('click', (e) => {
                `;
                document.querySelector('.menu .container').append(element);//добавляем на страницу
            });
-       }
+       }*/
+
+       axios.get('http://localhost:3000/menu')
+           .then(data =>{
+            data.data.forEach(({img,altimg,title,descr,price}) =>{//деструктурируем obj
+                new MenuCard(img,altimg,title,descr,price, '.menu .container').render();
+           });
+        });  
 
    
   
